@@ -69,6 +69,7 @@
   <?php endif; ?>
 
   <!-- Location form -->
+  <?php if (NEW_LOCATIONS): ?>
   <form method="POST" action="new_location.php" class="envlog_well">
   <div class="envlog_input_item">
     <label for="location_name">New location name</label>
@@ -140,6 +141,9 @@
     }
     });
   </script>
+  <?php else: ?>
+  <p>Support for adding new locations has been disabled. <a href="index.php">Click here</a> to return back to the home screen.</p>
+  <?php endif ?>
 
 </main>
 

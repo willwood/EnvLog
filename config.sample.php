@@ -7,9 +7,10 @@ $database_name = 'your_database_name';
 $database_username = 'your_username';
 $database_password = 'your_password';
 
-define('CSV_EXPAND_JSON', true);    // true = expand JSON into CSV columns
+define('CSV_EXPAND_JSON', true);  // true = expand JSON into CSV columns
 define('LAT_LON_COORDS', true);   // toggle latitude and longitude controls / mapping on and off
-$theme_color = '#198754';           // Webapp theme colour
+define('NEW_LOCATIONS', true);    // Toggles the ability for the user to add new locations on and off
+$theme_color = '#198754';         // Webapp theme colour
 
 try {
   $pdo = new PDO("mysql:host=$database_hostname;dbname=$database_name", $database_username, $database_password, [

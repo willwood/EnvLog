@@ -55,7 +55,9 @@
             echo "<option value='{$row['id']}'>{$row['location_name']}</option>";
           }
         ?>
+        <?php if (NEW_LOCATIONS): ?>
         <option value="new">&rightarrow; Add location</option>
+        <?php endif ?>
       </select>
     </div>
 
@@ -148,7 +150,13 @@
       errorSound.play();
       resultText.innerHTML = `<div class="envlog_alert envlog_error">
         <button class="envlog_alert_close_btn" aria-label="Close">&times;</button>
-        <p><strong>${result}</strong> is not currently in the database. <br><a href="new_location.php?new_loc=${encodeURIComponent(result)}">Click here</a> to add it as a new location.</p>
+        <p><strong>${result}</strong> is not a location in the database.
+        <?php if (NEW_LOCATIONS): ?>
+        <a href="new_location.php?new_loc=${encodeURIComponent(result)}">Click here</a> to setup this new location.
+        <?php else: ?>
+        <a href="index.php">Click here</a> to scan again or select an existing location from the menu below.
+        <?php endif; ?>
+        </p>
       </div>`;
     }
     scanner.clear();
