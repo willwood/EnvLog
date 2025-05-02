@@ -17,15 +17,19 @@
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
     $location_name = trim($_POST['location_name']);
-    $location_latitude = $_POST['location_latitude'];
-    $location_longitude = $_POST['location_longitude'];
+    $location_latitude = isset($_POST['location_latitude']) && $_POST['location_latitude'] !== ''
+      ? $_POST['location_latitude']
+      : null;
+    $location_longitude = isset($_POST['location_longitude']) && $_POST['location_longitude'] !== ''
+      ? $_POST['location_longitude']
+      : null;
 
-    // Validate latitude and longitude
-    if (!empty($location_latitude) && !filter_var($location_latitude, FILTER_VALIDATE_FLOAT)) {
-        die("Error: Invalid latitude value.");
+    // Validate latitude and longitude if they are not null
+    if (!is_null($location_latitude) && !filter_var($location_latitude, FILTER_VALIDATE_FLOAT)) {
+      die("Error: Invalid latitude value.");
     }
-    if (!empty($location_longitude) && !filter_var($location_longitude, FILTER_VALIDATE_FLOAT)) {
-        die("Error: Invalid longitude value.");
+    if (!is_null($location_longitude) && !filter_var($location_longitude, FILTER_VALIDATE_FLOAT)) {
+      die("Error: Invalid longitude value.");
     }
 
     try {
@@ -70,19 +74,21 @@
     <label for="location_name">New location name</label>
     <input type="text" name="location_name" id="location_name" placeholder="Location Name" required>
   </div>
+  <?php if (LAT_LON_COORDS): ?>
   <div class="envlog_well">
-  <div class="envlog_input_item">
-    <label for="location_latitude">Latitude</label>
-    <input type="text" name="location_latitude" id="location_latitude">
+    <div class="envlog_input_item">
+      <label for="location_latitude">Latitude</label>
+      <input type="text" name="location_latitude" id="location_latitude">
+    </div>
+    <div class="envlog_input_item">
+      <label for="location_longitude">Longitude</label>
+      <input type="text" name="location_longitude" id="location_longitude">
+    </div>
+    <div class="envlog_input_item">
+      <button type="button" id="lat_lon_button">Acquire Coordinates</button>
+    </div>
   </div>
-  <div class="envlog_input_item">
-    <label for="location_longitude">Longitude</label>
-    <input type="text" name="location_longitude" id="location_longitude">
-  </div>
-  <div class="envlog_input_item">
-    <button type="button" id="lat_lon_button">Acquire Coordinates</button>
-  </div>
-  </div>
+  <?php endif; ?>
   <div class="envlog_input_item">
     <button type="submit">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">

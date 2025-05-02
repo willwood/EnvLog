@@ -21,6 +21,7 @@
         </svg>
       </a>
     </li>
+    <?php if (LAT_LON_COORDS): ?>
     <li>
       <a href="view_map.php" aria-label="View data in map view">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
@@ -28,6 +29,7 @@
         </svg>
       </a>
     </li>
+    <?php endif; ?>
     <li>
       <a href="view_table.php" aria-label="View data table">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16">

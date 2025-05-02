@@ -3,8 +3,15 @@ include 'config.php';
 
 header('Content-Type: application/json');
 
-$query = "SELECT locations.location_name, locations.location_latitude, locations.location_longitude,
-                 measurements.measurement_date, measurements.measurement_data
+// Build SELECT clause conditionally
+$selectFields = "locations.location_name, measurements.measurement_date, measurements.measurement_data";
+$includeLatLon = defined('LAT_LON_COORDS') && LAT_LON_COORDS;
+
+if ($includeLatLon) {
+    $selectFields .= ", locations.location_latitude, locations.location_longitude";
+}
+
+$query = "SELECT $selectFields
           FROM measurements
           JOIN locations ON measurements.location_id = locations.id
           ORDER BY measurements.measurement_date ASC";
@@ -15,17 +22,26 @@ $results = [];
 while ($row = $stmt->fetch()) {
     $json_data = json_decode($row['measurement_data'], true) ?? [];
 
-    $results[] = [
-        'Location'  => $row['location_name'],
-        'Latitude'  => $row['location_latitude'],
-        'Longitude' => $row['location_longitude'],
-        'Date'      => $row['measurement_date'],
-        'Data'      => $json_data
-    ];
+    // Construct array in desired key order
+    if ($includeLatLon) {
+        $entry = [
+            'Location'  => $row['location_name'],
+            'Latitude'  => $row['location_latitude'],
+            'Longitude' => $row['location_longitude'],
+            'Date'      => $row['measurement_date'],
+            'Data'      => $json_data
+        ];
+    } else {
+        $entry = [
+            'Location' => $row['location_name'],
+            'Date'     => $row['measurement_date'],
+            'Data'     => $json_data
+        ];
+    }
+
+    $results[] = $entry;
 }
 
-$options = JSON_UNESCAPED_UNICODE;
-
-echo json_encode($results, $options);
+echo json_encode($results, JSON_UNESCAPED_UNICODE);
 exit();
 ?>

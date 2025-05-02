@@ -7,10 +7,9 @@ $database_name = 'your_database_name';
 $database_username = 'your_username';
 $database_password = 'your_password';
 
-define('CSV_EXPAND_JSON', true); // Set to true to expand JSON fields into separate columns, during the CSV export
-define('JSON_EXPORT_PRETTY', true); // true = readable, pretty-printed JSON / false = minified, optimised JSON
-
-$theme_color = '#198754'; // Webapp theme color
+define('CSV_EXPAND_JSON', true);    // true = expand JSON into CSV columns
+define('LAT_LON_COORDS', true);   // toggle latitude and longitude controls / mapping on and off
+$theme_color = '#198754';           // Webapp theme colour
 
 try {
   $pdo = new PDO("mysql:host=$database_hostname;dbname=$database_name", $database_username, $database_password, [
