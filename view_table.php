@@ -24,7 +24,7 @@
 
     <div id="envlog_table_toolbar_right">
       <label class="json-toggle">
-          <input type="checkbox" id="toggleRawJson" checked> Show raw JSON
+          <input type="checkbox" id="toggle_pretty_json"> Pretty JSON
       </label>
 
       <div id="envlog_ordering_buttons">
@@ -133,10 +133,10 @@ function updateSortOrder(order) {
 }
 
 // Toggle between raw and pretty JSON
-document.getElementById('toggleRawJson').addEventListener('change', function () {
+document.getElementById('toggle_pretty_json').addEventListener('change', function () {
     const showRaw = this.checked;
-    document.querySelectorAll('.json-raw').forEach(el => el.style.display = showRaw ? 'block' : 'none');
-    document.querySelectorAll('.json-pretty').forEach(el => el.style.display = showRaw ? 'none' : 'block');
+    document.querySelectorAll('.json-raw').forEach(el => el.style.display = showRaw ? 'none' : 'block');
+    document.querySelectorAll('.json-pretty').forEach(el => el.style.display = showRaw ? 'block' : 'none');
 });
 
 // Filter table by location
