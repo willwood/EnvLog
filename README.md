@@ -12,7 +12,7 @@ Form fields are added using HTML5 markup, with submitted field names and values 
 - Customisable data input fields (e.g., soil moisture, crop height, air quality and weather observations).
 - Data saved with timestamp and location.
 - A clean, lightweight and accessible interface.
-- Data easily exportable in CSV and JSON format for further analysis.
+- Data easily exportable in CSV and JSON format for further analysis, see details below.
 - View locations on an interactive satellite or street map.
 
 ## 🚀 Installation
@@ -97,6 +97,8 @@ All data is stored in the database in JSON format, making it easy to:
 - View online or export data sets in CSV and JSON formats.
 - Use for offline analysis in software like Excel, SAS, R, or Python.
 - Visualise trends over time.
+
+**Ron de Bruin** has published a comprehensive guide [here](https://macexcel.com/envlog/) that goes into more detail about the setup of EnvLog. This article details the ability to pull the dataset directly into Microsoft Excel on Windows or Mac using **Power Query**. It provides a real-world example of EnvLog in horticulture.
 
 ## 🛡 Licence
 
