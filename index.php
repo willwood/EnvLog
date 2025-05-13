@@ -7,28 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="<?php echo $theme_color; ?>" />
   <link rel="stylesheet" href="styles.css">
-  <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
-  <script>
-    function handleLocationChange(selectElement) {
-      const selectedValue = selectElement.value;
-      const selectedText = selectElement.options[selectElement.selectedIndex].text;
-
-      if (selectedValue === 'new') {
-        // Redirect if 'Add New Location' is selected
-        window.location.href = 'new_location.php';
-        return;
-      }
-
-      if (selectedValue) {
-        document.getElementById('envlog_data_form').style.display = 'flex';
-        document.getElementById('location_id').value = selectedValue;
-        document.getElementById('place_name').textContent = selectedText;
-        document.querySelectorAll('[data-envlog-location-control]').forEach(element =>
-          element.style.display = 'none'
-        );
-      }
-    }
-  </script>
 </head>
 <body>
 
@@ -47,7 +25,7 @@
 
   <form method="POST" action="submit.php">
     <div class="envlog_input_item">
-      <select name="location" onchange="handleLocationChange(this)" data-envlog-location-control>
+      <select name="location" id="locationSelect" data-envlog-location-control>
         <option value="" selected>Choose location...</option>
         <?php
           $stmt = $pdo->query("SELECT id, location_name FROM locations");
@@ -115,79 +93,11 @@
 <audio id="success-sound" src="sound_fx/success.mp3" preload="auto"></audio>
 <audio id="error-sound" src="sound_fx/error.mp3" preload="auto"></audio>
 
+<script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
 <script>
-  document.querySelector('form').addEventListener('submit', function (e) {
-    const inputs = [...this.elements].filter(el =>
-      el.name && el.type !== 'hidden'
-    );
-    const order = inputs.map(input => input.name);
-    document.getElementById('field_order').value = JSON.stringify(order);
-  });
-
-  const successSound = document.getElementById('success-sound');
-  const errorSound = document.getElementById('error-sound');
-  const scanner = new Html5QrcodeScanner('reader', {
-    qrbox: { width: 200, height: 200 },
-    fps: 20,
-    videoConstraints: {
-      facingMode: { exact: "environment" }
-    }
-  });
-
-  scanner.render(onScanSuccess, onScanError);
-
-  function onScanSuccess(result) {
-    const selectMenu = document.querySelector('select[name="location"]');
-    const resultText = document.querySelector('#result');
-    const options = Array.from(selectMenu.options);
-    const matchedOption = options.find(option => option.text === result);
-
-    if (matchedOption) {
-      successSound.play();
-      selectMenu.value = matchedOption.value;
-      handleLocationChange(selectMenu);
-    } else {
-      errorSound.play();
-      resultText.innerHTML = `<div class="envlog_alert envlog_error">
-        <button class="envlog_alert_close_btn" aria-label="Close">&times;</button>
-        <p><strong>${result}</strong> is not a location in the database.
-        <?php if (NEW_LOCATIONS): ?>
-        <a href="new_location.php?new_loc=${encodeURIComponent(result)}">Click here</a> to setup this new location.
-        <?php else: ?>
-        <a href="index.php">Click here</a> to scan again or select an existing location from the menu below.
-        <?php endif; ?>
-        </p>
-      </div>`;
-    }
-    scanner.clear();
-  }
-
-  function onScanError(err) {
-    errorSound.play();
-    document.getElementById('result').innerHTML = `<div class="envlog_alert envlog_error">
-        <button class="envlog_alert_close_btn" aria-label="Close">&times;</button>
-        <p><strong>An error occurred:</strong> ${err}</p>
-        </div>`;
-    console.error(err);
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.envlog_alert .envlog_alert_close_btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        const alert = this.closest('.envlog_alert');
-        if (alert) {
-          alert.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('envlog_alert_close_btn')) {
-        e.target.parentElement.remove();
-    }
-});
+  const NEW_LOCATIONS = <?php echo json_encode(NEW_LOCATIONS); ?>;
 </script>
+<script src="scripts.js"></script>
 
 </body>
 </html>
