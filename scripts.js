@@ -17,6 +17,7 @@ function handleLocationChange(selectElement) {
       .forEach((el) => {
         el.style.display = 'none';
       });
+    closeSuccess();
   }
 }
 
@@ -69,7 +70,7 @@ function onScanSuccess(result) {
         </p>
       </div>`;
   }
-
+  closeSuccess();
   scanner.clear();
 }
 
@@ -83,17 +84,37 @@ function onScanError(err) {
   console.error(err);
 }
 
-// Close alert buttons
+// Close alerts
 document.addEventListener('DOMContentLoaded', () => {
   document
     .querySelectorAll('.envlog_alert .envlog_alert_close_btn')
     .forEach((btn) => {
       btn.addEventListener('click', () => {
+        removeSuccessParamFromUrl();
         const alert = btn.closest('.envlog_alert');
-        if (alert) alert.style.display = 'none';
+        if (alert) {
+          alert.style.display = 'none';
+        }
       });
     });
 });
+
+function closeSuccess() {
+  const successBox = document.querySelector('.envlog_success');
+  if (successBox) {
+    successBox.style.display = 'none';
+    removeSuccessParamFromUrl();
+  }
+}
+
+// Remove success=1 when the alert box is closed
+function removeSuccessParamFromUrl() {
+  const url = new URL(window.location);
+  if (url.searchParams.has('success')) {
+    url.searchParams.delete('success');
+    window.history.replaceState({}, document.title, url.toString());
+  }
+}
 
 // Listen for location
 document.addEventListener('DOMContentLoaded', () => {
