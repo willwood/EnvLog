@@ -37,7 +37,7 @@ body {
   font-family: var(--envlog-font-face);
   line-height: 1.5;
   font-size: 1rem;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 main {
