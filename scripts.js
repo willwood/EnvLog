@@ -36,7 +36,7 @@ const errorSound = document.getElementById('error-sound');
 
 const scanner = new Html5QrcodeScanner('reader', {
   qrbox: { width: 200, height: 200 },
-  fps: 20,
+  fps: 10,
   videoConstraints: {
     facingMode: { exact: 'environment' },
   },
@@ -75,12 +75,6 @@ function onScanSuccess(result) {
 }
 
 function onScanError(err) {
-  errorSound.play();
-  document.getElementById('result').innerHTML = `
-    <div class="envlog_alert envlog_error">
-      <button class="envlog_alert_close_btn" aria-label="Close">&times;</button>
-      <p><strong>An error occurred:</strong> ${err}</p>
-    </div>`;
   console.error(err);
 }
 
