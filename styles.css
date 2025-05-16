@@ -280,6 +280,9 @@ select {
   border-radius: 0.3rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   margin-bottom: 1rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 select:focus {
