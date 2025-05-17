@@ -8,6 +8,8 @@ $database_username = 'your_username';
 $database_password = 'your_password';
 
 define('CSV_EXPAND_JSON', true);  // true = expand JSON into CSV columns
+define('DELETE_CONTROLS', true);  // Enable or disable deleting of existing content
+define('EDIT_CONTROLS', true);    // Enable or disable editing of existing content
 define('LAT_LON_COORDS', true);   // toggle latitude and longitude controls / mapping on and off
 define('NEW_LOCATIONS', true);    // Toggles the ability for the user to add new locations on and off
 $theme_color = '#198754';         // Webapp theme colour
