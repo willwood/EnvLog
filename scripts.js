@@ -117,6 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
     locationSelect.addEventListener('change', () =>
       handleLocationChange(locationSelect)
     );
+
+    // Automatically trigger location handling if editing
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('edit_id') && locationSelect.value) {
+      handleLocationChange(locationSelect);
+    }
   }
 });
 

@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'location_latitude',
         'location_longitude',
         'location',
-        'field_order'
+        'field_order',
+        'edit_id'
     ];
     $dynamic_data = array_diff_key($_POST, array_flip($excluded_keys));
 
@@ -31,8 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json_data = json_encode($ordered_data, JSON_UNESCAPED_UNICODE);
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO measurements (location_id, measurement_date, measurement_data) VALUES (?, ?, ?)");
-        $stmt->execute([$location_id, $measurement_date, $json_data]);
+        if (!empty($_POST['edit_id'])) {
+            // UPDATE existing
+            $edit_id = (int) $_POST['edit_id'];
+            $stmt = $pdo->prepare("UPDATE measurements SET location_id = ?, measurement_date = ?, measurement_data = ? WHERE id = ?");
+            $stmt->execute([$location_id, $measurement_date, $json_data, $edit_id]);
+
+        } else {
+            // INSERT new
+            $stmt = $pdo->prepare("INSERT INTO measurements (location_id, measurement_date, measurement_data) VALUES (?, ?, ?)");
+            $stmt->execute([$location_id, $measurement_date, $json_data]);
+        }
 
         header("Location: index.php?success=1");
         exit();
